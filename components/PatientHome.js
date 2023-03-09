@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext,useRef  } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {
@@ -16,6 +16,7 @@ import {
   Pressable,
 } from 'react-native';
 // import Drawer from './Drawer'
+import { RNCamera } from 'react-native-camera';
 import { AutoFocus, Camera, CameraType } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { ListItem, Avatar } from "@react-native-material/core";
@@ -30,7 +31,7 @@ import {
   BackdropSubheader
 } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { DiseaseContext, PatientContext,AppointmentsContext } from '../contexts';
+import { DiseaseContext, PatientContext, AppointmentsContext } from '../contexts';
 import Constants from "expo-constants";
 const { manifest } = Constants;
 
@@ -40,15 +41,23 @@ const { manifest } = Constants;
 // const api2 = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
 //   ? manifest.debuggerHost.split(`:`).shift().concat(`:5000`)
 //   : `api.example.com`;
-import {api2,api} from './Constants'
+import { api2, api } from './Constants'
 
 
 function HomeScreen({ navigation }) {
   const [done, setDone] = useState(false)
-  
+
   const takePicture = async () => {
     if (camera) {
-      const result = await camera.takePictureAsync(null)
+      let result
+      try {
+         const options = {quality: 0.5};
+        result = await camera.takePictureAsync(options);
+        
+        console.log('Picture taken:', result.uri);
+      } catch (e) {
+        console.error('Failed to take picture:', e);
+      }
       setDone(false)
       setImage(result.uri);
       if (!result.cancelled) {
@@ -56,24 +65,24 @@ function HomeScreen({ navigation }) {
         setImage(result.uri);
 
         const formData = new FormData();
-      formData.append('image', {
-        uri: result.uri,
-        name: 'image.jpg',
-        type: 'image/jpeg',
-      });
+        formData.append('image', {
+          uri: result.uri,
+          name: 'image.jpg',
+          type: 'image/jpeg',
+        });
 
-      // Send the form data to the server using the fetch method
-      fetch(`${api2}/upload`, {
-        method: 'POST',
-        body: formData,
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data)
-          setClassified(data)
+        // Send the form data to the server using the fetch method
+        fetch(`${api2}/upload`, {
+          method: 'POST',
+          body: formData,
         })
-        .catch(error => console.error(error));
-         
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            setClassified(data)
+          })
+          .catch(error => console.error(error));
+
       };
     }
   }
@@ -87,53 +96,68 @@ function HomeScreen({ navigation }) {
   useEffect(() => { OpenCamera() }, [])
   const [camera, setCamera] = useState(null);
   const [image, setImage] = useState(null);
+  const cameraRef = useRef(null);
 
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
   return (
-   <>
-   <View style={done ? styles.heightAuto : styles.fill}>
+    <>
+      <View style={done ? styles.heightAuto : styles.fill}>
 
-      {
-        !image &&
-        <>
-          <Button
-            title="Flip Image"
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}>
-          </Button>
-          <View style={styles.cameraContainer}>
-            <Camera
-              ref={ref => setCamera(ref)}
+        {
+          !image &&
+          <>
+            <Button
+              title="Flip Image"
+              onPress={() => {
+                setType(
+                  type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back
+                );
+              }}>
+            </Button>
+            <View style={styles.cameraContainer}>
+              {/* <Camera
+                ref={cameraRef}
               style={styles.fixedRatio}
               type={type}
-              ratio={'1:1'} />
-          </View>
-          <Button title='picture' onPress={takePicture}></Button>
-        </>}
+              ratio={'1:1'} /> */}
+              <RNCamera
+                ref={ref => {
+                  setCamera(ref)
+                }}
+                captureAudio={false}
+                style={{ flex: 1 }}
+                type={RNCamera.Constants.Type.back}
+                androidCameraPermissionOptions={{
+                  title: 'Permission to use camera',
+                  message: 'We need your permission to use your camera',
+                  buttonPositive: 'Ok',
+                  buttonNegative: 'Cancel',
+                }} />
+            </View>
+            <Button title='picture' onPress={takePicture}></Button>
+          </>}
 
-      {image && !done && (<>
-        <Text style={{ fontSize: 20 }}>Your Picture</Text>
-        <Image source={{ uri: image }} style={{ marginTop: 100, width: 150, height: 150, }} />
-        <Button title="Make appointment" onPress={() => {
-          
-          setDone(true)
-          navigation.navigate('DoctorsAppointments')          }} />
-        {classified.prob >= 0.5 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : classified.prob ? <Text>Could not
+        {image && !done && (<>
+          <Text style={{ fontSize: 20 }}>Your Picture</Text>
+          <Image source={{ uri: image }} style={{ marginTop: 100, width: 150, height: 150, }} />
+          <Button title="Make appointment" onPress={() => {
+
+            setDone(true)
+            navigation.navigate('DoctorsAppointments')
+          }} />
+          {classified.prob >= 0.9 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : classified.prob ? <Text>Could not
             classify among any disease due to poor probability: {classified.prob}</Text> : <Text>Waiting for model prediction</Text>}
-          {classified.classname?<Remedies disease={`${classified.classname}`} />:null}
-      </>)}
-    </View>
-  {/* {!done &&  <Remedies disease='Eczema' />}  */}
+          {classified.classname ? <Remedies disease={`${classified.classname}`} /> : null}
+        </>)}
+      </View>
+      {/* {!done &&  <Remedies disease='Eczema' />}  */}
 
-      
-</>
+
+    </>
   );
 }
 function GalleryScreen({ navigation }) {
@@ -185,21 +209,21 @@ function GalleryScreen({ navigation }) {
         <Image source={{ uri: image }} style={{ width: 300, height: 300, }} />
         <Button title="Make appointment" onPress={() => {
           setDone(true)
-        navigation.navigate('DoctorsAppointments')
-      }
+          navigation.navigate('DoctorsAppointments')
+        }
         } />
-        {classified.prob >= 0.5 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : <Text>Could not
-          classify among any disease due to poor probability: {classified.prob}</Text>}
+        {/* {classified.prob >= 0.5 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : <Text>Could not
+          classify among any disease due to poor probability: {classified.prob}</Text>} */}
       </View>
-      {classified.prob >= 0.5 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : classified.prob ? <Text>Could not
-            classify among any disease due to poor probability: {classified.prob}</Text> : <Text>Waiting for model prediction</Text>}
-          {classified.classname?<Remedies disease={`${classified.classname}`} />:null}
+        {classified.prob >= 0.9 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : classified.prob ? <Text>Could not
+          classify among any disease due to poor probability: {classified.prob}</Text> : <Text>Waiting for model prediction</Text>}
+        {classified.classname ? <Remedies disease={`${classified.classname}`} /> : null}
       </>
       )
       }
-          
 
-     
+
+
     </>
   );
 }
@@ -228,7 +252,7 @@ export function DoctorsAppointments({ navigation }) {
         console.log(err);
       })
     //   setDoctors([
-       
+
     //     {
     //         "id": 10,
     //         "name": "Mubeen Siddiqui ",
@@ -286,7 +310,7 @@ export function DoctorsAppointments({ navigation }) {
       .catch((err) => {
         console.log(err);
       })
-      
+
     //   setAppointments([
     //     {
     //         "id": 13,
@@ -348,37 +372,37 @@ export function DoctorsAppointments({ navigation }) {
   useEffect(() => {
     doctors_for_patient()
     getAppointments()
-    console.log({appointments})
+    console.log({ appointments })
   }, [])
   return (
     <ScrollView>
-    <View style={{ padding: 4 }}>
-      <Text>Doctors;</Text>
-      {doctors.map((doctor, i) => (
+      <View style={{ padding: 4 }}>
+        <Text>Doctors;</Text>
+        {doctors.map((doctor, i) => (
 
-        <ListItem
-          // onPress={()=>navigation.navigate('Appointment',{doctor})}
-          onPress={() => navigation.navigate('AppointmentBooking', { doctor })}
-          key={i}
-          leadingMode="avatar"
-          leading={
-            <Avatar image={{ uri: "https://mui.com/static/images/avatar/3.jpg" }} />
-          }
-          title={doctor.name}
-          secondaryText={"Speciality: " + doctor.speciality + " - Charges: " + doctor.charges + " - Timing: " + doctor.timing}
-        />
-      ))}
-      <Text>
-        Your Appointments:
-      </Text>
-      {appointments.map((app, i) => (
-        <ListItem
-          key={i}
-          title={app.doctor_name}
-          secondaryText={"Meeting type: " + app.meeting_type + " - Timing: " + app.timing + " - Disease: " + app.disease}
-        />
-      ))}
-    </View>
+          <ListItem
+            // onPress={()=>navigation.navigate('Appointment',{doctor})}
+            onPress={() => navigation.navigate('AppointmentBooking', { doctor })}
+            key={i}
+            leadingMode="avatar"
+            leading={
+              <Avatar image={{ uri: "https://mui.com/static/images/avatar/3.jpg" }} />
+            }
+            title={doctor.name}
+            secondaryText={"Speciality: " + doctor.speciality + " - Charges: " + doctor.charges + " - Timing: " + doctor.timing}
+          />
+        ))}
+        <Text>
+          Your Appointments:
+        </Text>
+        {appointments.map((app, i) => (
+          <ListItem
+            key={i}
+            title={app.doctor_name}
+            secondaryText={"Meeting type: " + app.meeting_type + " - Timing: " + app.timing + " - Disease: " + app.disease}
+          />
+        ))}
+      </View>
     </ScrollView>
   )
 }

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "SkinApp",
+    "name": "skinapp",
     "slug": "SkinApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,11 +21,16 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.mubeensiddiqui99.SkinApp"
+      "package": "com.web.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
