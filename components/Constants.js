@@ -1,2 +1,2 @@
-export const api2='https://huge-buckets-doubt-39-50-236-196.loca.lt'
-export const api='https://crazy-fans-appear-39-50-236-196.loca.lt'
+export const api2='https://poor-glasses-judge-39-50-179-15.loca.lt'
+export const api='https://happy-loops-smile-39-50-179-15.loca.lt'

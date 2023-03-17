@@ -51,7 +51,7 @@ function HomeScreen({ navigation }) {
     if (camera) {
       let result
       try {
-         const options = {quality: 0.5};
+         const options = {quality: 0.7};
         result = await camera.takePictureAsync(options);
         
         console.log('Picture taken:', result.uri);
@@ -151,7 +151,7 @@ function HomeScreen({ navigation }) {
           }} />
           {classified.prob >= 0.9 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : classified.prob ? <Text>Could not
             classify among any disease due to poor probability: {classified.prob}</Text> : <Text>Waiting for model prediction</Text>}
-          {classified.classname ? <Remedies disease={`${classified.classname}`} /> : null}
+          {classified.classname && classified.prob >= 0.9 ? <Remedies disease={`${classified.classname}`} /> : null}
         </>)}
       </View>
       {/* {!done &&  <Remedies disease='Eczema' />}  */}
@@ -217,7 +217,7 @@ function GalleryScreen({ navigation }) {
       </View>
         {classified.prob >= 0.9 ? <Text>Found {classified.classname} with {classified.prob} probability</Text> : classified.prob ? <Text>Could not
           classify among any disease due to poor probability: {classified.prob}</Text> : <Text>Waiting for model prediction</Text>}
-        {classified.classname ? <Remedies disease={`${classified.classname}`} /> : null}
+        {classified.classname && classified.prob >= 0.9 ? <Remedies disease={`${classified.classname}`} /> : null}
       </>
       )
       }

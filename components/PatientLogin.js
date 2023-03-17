@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PatientContext } from '../contexts';
 
 import Constants from "expo-constants";
+import {api2,api} from './Constants'
 
 const PatientLogin = ({navigation,route}) => {
   const [userEmail, setUserEmail] = useState('');
@@ -44,9 +45,9 @@ const PatientLogin = ({navigation,route}) => {
       const inputs={userEmail,userPassword}
       const { manifest } = Constants;
 
-const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
-  ? manifest.debuggerHost.split(`:`).shift().concat(`:3001`)
-  : `api.example.com`;
+// const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
+//   ? manifest.debuggerHost.split(`:`).shift().concat(`:3001`)
+//   : `api.example.com`;
 
       Axios.post(`${api}/patient_login`, inputs)
       .then((response) => {
@@ -87,9 +88,9 @@ const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts
       console.log({inputs})
       const { manifest } = Constants;
 
-      const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
-        ? manifest.debuggerHost.split(`:`).shift().concat(`:3001`)
-        : `api.example.com`;
+      // const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
+      //   ? manifest.debuggerHost.split(`:`).shift().concat(`:3001`)
+      //   : `api.example.com`;
       Axios.post(`${api}/patient_login`, inputs)
       .then((response) => {
         if (response.status === 200) {
