@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Axios from "axios";
-import { DiseaseContext, PatientContext,AppointmentsContext } from '../contexts';
+import { DiseaseContext, PatientContext, AppointmentsContext } from '../contexts';
 import { Card, Button, Icon } from "react-native-elements";
 import RadioButtonRN from "radio-buttons-react-native";
 import Constants from "expo-constants";
@@ -21,28 +21,33 @@ const { manifest } = Constants;
 // const api = (typeof manifest.packagerOpts === `object`) && manifest.packagerOpts.dev
 //   ? manifest.debuggerHost.split(`:`).shift().concat(`:3001`)
 //   : `api.example.com`;
-import {api2,api} from './Constants'
+import { api2, api } from './Constants'
 
 
-const MedicalAppointment = ({ navigation, route}) => {
-  const [patient,setPatient]=useContext(PatientContext)
-  const [disease,setDisease]=useContext(DiseaseContext)
-  const [appointments,setAppointments]=useContext(AppointmentsContext)
-  console.log(route);
-  const doctor=route.params.doctor;
-  console.log("Patient Info...",patient);
+const MedicalAppointment = ({ navigation, route }) => {
+  const [patient, setPatient] = useContext(PatientContext)
+
+  // console.log(route);
+
+  const doctor = route.params.doctor;
+  // console.log({ doctor })
+  // console.log("Patient Info...", patient);
   const [appointment, setAppointment] = useState({
     doctor: `${doctor.name}`,
     date: new Date(),
     meetings: "",
+
   });
+  console.log({ appointment })
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
+    const selectedTimestamp = event.nativeEvent.timestamp;
     setShow(false);
-    setAppointment({ ...appointment, date: currentDate });
+    const selectedDateObject = new Date(selectedTimestamp);
+
+    setAppointment({ ...appointment, date: selectedDateObject });
   };
 
   const showMode = (currentMode) => {
@@ -67,58 +72,7 @@ const MedicalAppointment = ({ navigation, route}) => {
     });
   };
 
-const setAppointmentDB = () => {
-    console.log("This is Appointment",appointment);
-    const prob=disease.prob;
-    let dis='';
-    if (prob>=0.5) {
-      dis=disease.prob
-    }
-    console.log({doctor})
-    console.log({disease})
-    const dataCopy = [...appointments,{
-      "id": appointments.length,
-      "patient_id": patient.id,
-      "doctor_id": doctor.id,
-      "timing": appointment.date,
-      "taken_place": 0,
-      "disease": disease.classname || "",
-      "doctor_name": appointment.doctor,
-      "meeting_type": appointment.meetings,
-      "patient_name": patient.name
-  }];
-  console.log({
-    "id": appointments.length,
-    "patient_id": patient.id,
-    "doctor_id": doctor.id,
-    "timing": appointment.date,
-    "taken_place": 0,
-    "disease": disease.classname || "",
-    "doctor_name": appointment.doctor,
-    "meeting_type": appointment.meetings,
-    "patient_name": patient.name
-})
-    setAppointments(dataCopy);
-    Axios.post(`${api}/set_appointment`, {
-        doctor_id: doctor.id,
-        patient_id: patient.id,
-        disease:dis,
-        timing: "timing",
-        date: appointment.date,
-        doctor_name: appointment.doctor,
-        meeting_type:appointment.meetings,
-        patient_name:patient.name
-    })
-        .then((response) => {
-            if (response.status === 200) {
-                console.log(response);
-                
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-}
+
 
   return (
     <View style={styles.headerContainer}>
@@ -179,19 +133,19 @@ const setAppointmentDB = () => {
                   setVisible(false);
                 }}
               >
-                 <View style={{ alignItems: "center" }}>
-                 <Text>OK</Text>
-           </View>
-        
+                <View style={{ alignItems: "center" }}>
+                  <Text>OK</Text>
+                </View>
+
               </TouchableOpacity>
             </View>
           </View>
 
-         
+
 
           <Text
             style={{ marginVertical: 30, fontSize: 20, textAlign: "center" }}
-            
+
           >
             Congratulations! Your booking was successful
           </Text>
@@ -201,9 +155,9 @@ const setAppointmentDB = () => {
           containerStyle={styles.button}
           title="Book"
           onPress={() => {
-            navigation.navigate('StripePayment');
+            navigation.navigate('StripePayment', { doctor, appointment: { ...appointment, date: appointment.date.toJSON() } });
             setVisible(true);
-            setAppointmentDB();
+
           }}
         />
       </View>

@@ -72,7 +72,7 @@ const History = ({ navigation, route }) => {
               console.log("This is error", JSON.stringify(err));
             });
         }
-        navigation.navigate(`Call`)
+        navigation.navigate(`VideoCall`)
     }
         
         // setAppointments([

@@ -5,7 +5,7 @@ import MedicalAppointment from "./MedicalAppointment";
 
 
 const AppointmentBooking = ({ navigation, route }) => {
-  
+  const doctor=route.params.doctor
   console.log("This is appointment Route",route)
   const MedicalSubmit =()=>{
     console.log("I am heere",doctor);

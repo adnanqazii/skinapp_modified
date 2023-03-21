@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext,useRef  } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {
@@ -51,9 +51,9 @@ function HomeScreen({ navigation }) {
     if (camera) {
       let result
       try {
-         const options = {quality: 0.7};
+        const options = { quality: 0.7 };
         result = await camera.takePictureAsync(options);
-        
+
         console.log('Picture taken:', result.uri);
       } catch (e) {
         console.error('Failed to take picture:', e);
@@ -396,11 +396,14 @@ export function DoctorsAppointments({ navigation }) {
           Your Appointments:
         </Text>
         {appointments.map((app, i) => (
-          <ListItem
-            key={i}
-            title={app.doctor_name}
-            secondaryText={"Meeting type: " + app.meeting_type + " - Timing: " + app.timing + " - Disease: " + app.disease}
-          />
+        
+            <ListItem
+              key={i}
+              title={app.doctor_name}
+            onPress={()=>{navigation.navigate('VideoCall')}}
+              secondaryText={"Meeting type: " + app.meeting_type + " - Timing: " + app.timing + " - Disease: " + app.disease}
+            />
+        
         ))}
       </View>
     </ScrollView>

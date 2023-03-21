@@ -31,7 +31,7 @@ const AdminView = ({ navigation, route }) => {
         // setemp_id1(res.data.insertId);
       })
       .catch((err) => {
-        setErrortext(err.Error);
+        // setErrortext(err.Error);
         console.log("This is error", JSON.stringify(err));
         
       });

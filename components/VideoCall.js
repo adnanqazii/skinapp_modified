@@ -16,7 +16,7 @@ import {
 } from 'react-native-agora';
 const appId = '6867bb4ece064929837fd67045fea2c1';
 const channelName = 'call-test';
-const token = '007eJxTYNDZK3InU/+N9J45T5PW7ltqaLJUtqztYeJkTde/Mdx/v5QoMJhZmJknJZmkJqcamJlYGllaGJunpZiZG5iYpqUmGiUbFix4n9wQyMjQ/OEcCyMDBIL4nAzJiTk5uiWpxSUMDABGeyMa';
+const token = '007eJxTYKgOtTxnxy3Ib6inafDq7lPFlbOfJvOXbattOGaaVvHHe6sCg5mFmXlSkklqcqqBmYmlkaWFsXlaipm5gYlpWmqiUbLhuhOSKQ2BjAwfiwxYGRkgEMTnZEhOzMnRLUktLmFgAABlHiAG';
 const uid = 0;
 
 const VideoCall = () => {
@@ -89,7 +89,7 @@ const VideoCall = () => {
      
     return (
         <SafeAreaView style={styles.main}>
-            <Text style={styles.head}>Agora Video Calling Quickstart</Text>
+            <Text style={styles.head}>Video Call</Text>
             <View style={styles.btnContainer}>
                 <Text onPress={join} style={styles.button}>
                     Join
