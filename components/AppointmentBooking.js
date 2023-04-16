@@ -23,15 +23,7 @@ const AppointmentBooking = ({ navigation, route }) => {
             marginVertical: 5,
           }}
         >
-          <Avatar
-            avatarStyle={{
-              borderWidth: 1,
-              borderColor: "#1E90FF",
-            }}
-            rounded
-            size="large"
-            source="C:/Users/user/Desktop/Mubeen_Siddiqui.jpeg"
-          />
+         
           <View style={{ marginLeft: 8 }}>
             <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 16 }}>
               {doctor.name}
@@ -48,13 +40,7 @@ const AppointmentBooking = ({ navigation, route }) => {
             </Text>
           </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Icon name="star" size={20} color="orange" />
-          <Icon name="star" size={20} color="orange" />
-          <Icon name="star" size={20} color="orange" />
-          <Icon name="star" size={20} color="orange" />
-          <Icon name="star" size={20} color="orange" />
-        </View>
+      
       </View>
 
       <View style={styles.email}>
@@ -70,7 +56,7 @@ const AppointmentBooking = ({ navigation, route }) => {
       {/* <MedicalAppointment doctor={doctor}  /> */}
       <Button
         onPress={()=>{MedicalSubmit()}}
-        title="Medical AppointMent"
+        title="Medical Appointment"
         color="#841584"
         />
     </View>

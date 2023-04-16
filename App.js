@@ -41,45 +41,49 @@ export default function App() {
   const AppointmentsState = useState([])
   return (
 
+    <SafeAreaView style={styles.container}>
+      <View style={styles.innerContainer}>
+        <NavigationContainer>
+          <PatientContext.Provider value={PatientState}>
+            <DoctorContext.Provider value={DoctorState}>
+              <DiseaseContext.Provider value={DiseaseState}>
+                <AppointmentsContext.Provider value={AppointmentsState}>
+                  <Stack.Navigator initialRouteName="Intro">
+                    {/* <Stack.Screen name="Drawer" component={Drawer} /> */}
+                    <Stack.Screen name="MedicalAppointment" component={MedicalAppointment} />
+                    <Stack.Screen name="VideoCall" component={VideoCall} />
+                    <Stack.Screen name="StripeApp" component={StripeApp} />
+                    <Stack.Screen name="StripePayment" component={StripePayment} />
+                    <Stack.Screen name="History" component={History} />
+                    <Stack.Screen name="Call" component={Call} />
+                    <Stack.Screen name="DoctorsAppointments" component={DoctorsAppointments} />
+                    <Stack.Screen name="DoctorAccountInfo" component={DoctorAccountInfo} />
+                    <Stack.Screen name="ViewDoctor" component={ViewDoctor} />
 
-    <NavigationContainer>
-      <PatientContext.Provider value={PatientState}>
-        <DoctorContext.Provider value={DoctorState}>
-          <DiseaseContext.Provider value={DiseaseState}>
-            <AppointmentsContext.Provider value={AppointmentsState}>
-              <Stack.Navigator initialRouteName="Intro">
-                {/* <Stack.Screen name="Drawer" component={Drawer} /> */}
-                <Stack.Screen name="MedicalAppointment" component={MedicalAppointment} />
-                <Stack.Screen name="VideoCall" component={VideoCall} />
-                <Stack.Screen name="StripeApp" component={StripeApp} />
-                <Stack.Screen name="StripePayment" component={StripePayment} />
-                <Stack.Screen name="History" component={History} />
-                <Stack.Screen name="Call" component={Call} />
-                <Stack.Screen name="DoctorsAppointments" component={DoctorsAppointments} />
-                <Stack.Screen name="DoctorAccountInfo" component={DoctorAccountInfo} />
-                <Stack.Screen name="ViewDoctor" component={ViewDoctor} />
+                    <Stack.Screen name="ViewPatient" component={ViewPatient} />
 
-                <Stack.Screen name="ViewPatient" component={ViewPatient} />
+                    <Stack.Screen name="Appointment" component={Appointment} />
+                    <Stack.Screen name="Intro" component={Intro} />
+                    <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+                    <Stack.Screen name="DoctorSignup" component={DoctorSignup} />
+                    <Stack.Screen name="DoctorLogin" component={DoctorLogin} />
+                    <Stack.Screen name="PatientLogin" component={PatientLogin} />
+                    <Stack.Screen name="PatientSignup" component={PatientSignup} />
+                    <Stack.Screen name="PatientHome" component={PatientHome} />
+                    <Stack.Screen name="Home" component={Home} />
+                    <Stack.Screen name="AdminLogin" component={AdminLogin} />
+                    <Stack.Screen name="AdminView" component={AdminView} />
+                    <Stack.Screen name="AppointmentBooking" component={AppointmentBooking} />
+                  </Stack.Navigator>
+                </AppointmentsContext.Provider>
+              </DiseaseContext.Provider>
+            </DoctorContext.Provider>
+          </PatientContext.Provider>
 
-                <Stack.Screen name="Appointment" component={Appointment} />
-                <Stack.Screen name="Intro" component={Intro} />
-                <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-                <Stack.Screen name="DoctorSignup" component={DoctorSignup} />
-                <Stack.Screen name="DoctorLogin" component={DoctorLogin} />
-                <Stack.Screen name="PatientLogin" component={PatientLogin} />
-                <Stack.Screen name="PatientSignup" component={PatientSignup} />
-                <Stack.Screen name="PatientHome" component={PatientHome} />
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="AdminLogin" component={AdminLogin} />
-                <Stack.Screen name="AdminView" component={AdminView} />
-                <Stack.Screen name="AppointmentBooking" component={AppointmentBooking} />
-              </Stack.Navigator>
-            </AppointmentsContext.Provider>
-          </DiseaseContext.Provider>
-        </DoctorContext.Provider>
-      </PatientContext.Provider>
+        </NavigationContainer>
 
-    </NavigationContainer>
+      </View>
+    </SafeAreaView>
 
 
   );
@@ -88,8 +92,10 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'pink',
-    alignItems: 'center',
-    justifyContent: 'center',
+     // Replace with your desired background color
+  },
+  innerContainer: {
+    flex: 1,
+    backgroundColor: '#Fbdebb',
   },
 });

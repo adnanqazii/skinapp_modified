@@ -23,9 +23,9 @@ import {api2,api} from './Constants'
 
 
 const PatientSignup = ({ navigation }) => {
-  const [values, setValues] = useState({userGender:'', userName: '', userEmail: '', userPassword: '', ConfirmUserPassword: '', userAge: '', userAddress: '',history:'' });
   const [patient,setPatient]=useContext(PatientContext)
-
+  const [values, setValues] = useState({userGender:'', userName: '', id:patient.id, userPassword: '', ConfirmUserPassword: '', userAge: '', userAddress: '',history:'' });
+  console.log({patient})
   const [errortext, setErrortext] = useState('');
   const [
     isRegistraionSuccess,
@@ -43,10 +43,7 @@ const PatientSignup = ({ navigation }) => {
     setErrortext('');
     console.log("Values:", values);
     const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
-    if (!strongRegex.test(values.userEmail)) {
-      alert('enter valid email')
-      return;
-    }
+   
 
     if (!/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+*!=]).*$/.test(values.userPassword)) {
       alert('Must be atleast 8 characters and contains atleast 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.');
@@ -56,10 +53,7 @@ const PatientSignup = ({ navigation }) => {
       alert('Please fill Name');
       return;
     }
-    if (!values.userEmail) {
-      alert('Please fill Email');
-      return;
-    }
+  
     if (!values.userAge) {
       alert('Please fill Age');
       return;
@@ -77,22 +71,22 @@ const PatientSignup = ({ navigation }) => {
       alert('Passwords Does not match!!');
       return;
     }
-    Axios.post(`${api}/patient_signup`, values)
+    Axios.post(`${api}/updatePatient`, values)
       .then((res) => {
         if (!res.data.message) {
           setIsRegistraionSuccess(true)
         }
         else {
-          alert(res.data.message)
+          alert("Updated")
         }
-        console.log({ res });
+        console.log(res.data);
         // setemp_id1(res.data.insertId);
       })
       .catch((err) => {
         setErrortext(err.Error);
         console.log("This is error", JSON.stringify(err));
       });
-    setPatient(  {
+    setPatient(  {...patient,
         "name": values.userName,
         "age": values.userAge,
         "gender": values.userGender,
@@ -135,18 +129,7 @@ const PatientSignup = ({ navigation }) => {
               blurOnSubmit={false}
             />
           </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(text) => handleChange('userEmail', text)}
-              underlineColorAndroid="#f000"
-              placeholder="Enter Email"
-              placeholderTextColor="#8b9cb5"
-              keyboardType="email-address"
-              returnKeyType="next"
-              blurOnSubmit={false}
-            />
-          </View>
+        
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}

@@ -39,6 +39,40 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
+app.post("/updateDoctor", async (req, res) => {
+  console.log(req.body)
+  const {name,charges,qualification,experience,speciality,password,id}=req.body;
+  
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+  db.query(
+    "UPDATE doctor SET name=?,charges=?,qualification=?,experience=?,speciality=?,password=?  WHERE id=?",
+    [name,charges,qualification,experience,speciality,hash,id],
+    async (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+      else {
+        if (result) {
+          // console.log(result[0].Password);
+          console.log({ result });
+         
+            // const { name, age, gender, id } = result[0]
+            // res.send(result).s
+            res.status(200).send(result);
+          
+        } else {
+          console.log("wrong id");
+          // res.send({ message: "Wrong Username/Password" }).status(404);
+          res.status(404).send({ message: "Wrong id" });
+        }
+      }
+
+    }
+  );
+});
+
+
 app.post("/doctorIn_signup", async (req, res) => {
   console.log("input", req.body);
   const email = req.body.userEmail;
@@ -360,6 +394,38 @@ app.post("/patient_login", async (req, res) => {
   );
 });
 
+app.post("/updatePatient", async (req, res) => {
+  console.log(req.body)
+  const {userGender,userName,userPassword,userAge,history,id}=req.body;
+  
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(userPassword, salt);
+  db.query(
+    "UPDATE patient SET gender = ?,name= ?,password=?,age=?,medical_history=? WHERE id=?",
+    [userGender,userName,hash,userAge,history,id],
+    async (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+      else {
+        if (result) {
+          // console.log(result[0].Password);
+          console.log({ result });
+         
+            // const { name, age, gender, id } = result[0]
+            // res.send(result).s
+            res.status(200).send(result);
+          
+        } else {
+          console.log("wrong id");
+          // res.send({ message: "Wrong Username/Password" }).status(404);
+          res.status(404).send({ message: "Wrong id" });
+        }
+      }
+
+    }
+  );
+});
 
   // const user = await db("users").first("*").where({ email: email });
   // // const user = users.find((user) => user.email, email);

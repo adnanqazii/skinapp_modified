@@ -37,7 +37,7 @@ const DoctorLogin = ({navigation,route}) => {
     try {
       await AsyncStorage.setItem("Email",userEmail );
       await AsyncStorage.setItem("Password",userPassword);
-      alert('Data successfully saved')
+      // alert('Data successfully saved')
     } catch (e) {
       alert('Failed to save the data to the storage')
     }
@@ -144,7 +144,7 @@ const DoctorLogin = ({navigation,route}) => {
         setErrortext("Incorrect email or password");
       });
       }
-      alert("Account Under Verification..")
+      // alert("Account Under Verification..")
     //   setDoctor({
     //     "id": 29,
     //     "name": "A",

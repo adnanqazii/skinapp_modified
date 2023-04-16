@@ -385,9 +385,7 @@ export function DoctorsAppointments({ navigation }) {
             onPress={() => navigation.navigate('AppointmentBooking', { doctor })}
             key={i}
             leadingMode="avatar"
-            leading={
-              <Avatar image={{ uri: "https://mui.com/static/images/avatar/3.jpg" }} />
-            }
+          
             title={doctor.name}
             secondaryText={"Speciality: " + doctor.speciality + " - Charges: " + doctor.charges + " - Timing: " + doctor.timing}
           />

@@ -125,7 +125,7 @@ const MedicalAppointment = ({ navigation, route }) => {
       </View>
 
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ModalPopUp visible={visible}>
+        {/* <ModalPopUp visible={visible}>
           <View style={{ alignItems: "center" }}>
             <View style={styles.header}>
               <TouchableOpacity
@@ -147,9 +147,9 @@ const MedicalAppointment = ({ navigation, route }) => {
             style={{ marginVertical: 30, fontSize: 20, textAlign: "center" }}
 
           >
-            Congratulations! Your booking was successful
+            Pay Now
           </Text>
-        </ModalPopUp>
+        </ModalPopUp> */}
 
         <Button
           containerStyle={styles.button}

@@ -1,2 +1,2 @@
-export const api2='https://rude-pants-yawn-39-50-240-63.loca.lt'
-export const api='https://busy-apes-take-39-50-240-63.loca.lt'
+export const api2='https://funny-glasses-watch-59-103-207-195.loca.lt'
+export const api='https://brown-cows-rest-59-103-207-195.loca.lt'

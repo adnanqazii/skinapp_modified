@@ -60,18 +60,18 @@ const History = ({ navigation, route }) => {
             console.log(err);
         })
         console.log("THISSS IS FLAG",flag);
-        if(flag===1)
-        {
-            Axios.post(`${api}/delete_appointment`, {id:route.params.item.id})
-            .then((res) => {
+        // if(flag===1)
+        // {
+        //     Axios.post(`${api}/delete_appointment`, {id:route.params.item.id})
+        //     .then((res) => {
 
-              console.log(res,"Deleted Successfully...")
-            })
-            .catch((err) => {
-              setErrortext(err.Error);
-              console.log("This is error", JSON.stringify(err));
-            });
-        }
+        //       console.log(res,"Deleted Successfully...")
+        //     })
+        //     .catch((err) => {
+        //       setErrortext(err.Error);
+        //       console.log("This is error", JSON.stringify(err));
+        //     });
+        // }
         navigation.navigate(`VideoCall`)
     }
         

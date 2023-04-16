@@ -7,6 +7,7 @@ import {
     View,
 } from 'react-native';
 import {PermissionsAndroid, Platform} from 'react-native';
+import PhoneButton from './PhoneButton';
 import {
     ClientRoleType,
     createAgoraRtcEngine,
@@ -16,7 +17,7 @@ import {
 } from 'react-native-agora';
 const appId = '6867bb4ece064929837fd67045fea2c1';
 const channelName = 'call-test';
-const token = '007eJxTYKgOtTxnxy3Ib6inafDq7lPFlbOfJvOXbattOGaaVvHHe6sCg5mFmXlSkklqcqqBmYmlkaWFsXlaipm5gYlpWmqiUbLhuhOSKQ2BjAwfiwxYGRkgEMTnZEhOzMnRLUktLmFgAABlHiAG';
+const token = '007eJxTYPjowX4qs/Viy+dXQTdPT9z9+ITsYpHvjFp1Id8eM02+lcWmwGBmYWaelGSSmpxqYGZiaWRpYWyelmJmbmBimpaaaJRsOEHBOqUhkJFB5mk7CyMDBIL4nAzJiTk5uiWpxSUMDACS4SKP';
 const uid = 0;
 
 const VideoCall = () => {
@@ -91,12 +92,15 @@ const VideoCall = () => {
         <SafeAreaView style={styles.main}>
             <Text style={styles.head}>Video Call</Text>
             <View style={styles.btnContainer}>
-                <Text onPress={join} style={styles.button}>
+                {/* <Text onPress={join} style={styles.button}>
                     Join
-                </Text>
-                <Text onPress={leave} style={styles.button}>
+                </Text> */}
+                <PhoneButton onPress={join} text={"Join"} color={"green"} />
+                {/* <Text onPress={leave} style={styles.button}>
                     Leave
-                </Text>
+                </Text> */}
+                <PhoneButton onPress={leave} text={"Leave"} color={"red"} />
+
             </View>
             <ScrollView
                 style={styles.scroll}
